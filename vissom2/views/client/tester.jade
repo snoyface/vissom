@@ -1,0 +1,25 @@
+extends ../layout.jade
+
+head
+    meta(charset='UTF-8')
+    title Tester!
+
+body
+    script(src='/vissom2/node_modules/interface.js/build/interface.js')
+    script.
+        panel = new Interface.Panel({ useRelativeSizesAndPositions:true }) // panel fills page by default, alternatively you can specify boundaries
+        slider1 = new Interface.Slider({
+            bounds: [0,0,.1,.5],
+            ontouchmousestart : function() { console.log('touch or mouse down on slider') }
+        })
+        slider2 = new Interface.Slider({
+            bounds: [.1,0,.1,.5],
+        })
+        panel.add( slider1, slider2 )
+        orientation = new Interface.Orientation({ // this only works on devices with a gyro sensor
+            onvaluechange : function(pitch, roll, yaw) {
+                slider2.setValue(pitch);
+            }
+        })
+        orientation.start()
+    p1 hello world, or Jim. Whatever

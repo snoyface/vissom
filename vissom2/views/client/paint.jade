@@ -1,0 +1,73 @@
+//
+   Created by jonathanmacleod1 on 1/31/16.
+extends ../layout.jade
+
+head
+    title Painter
+    script(src='/vissom2/node_modules/interface.js/build/interface.js')
+
+body
+    p1 Hello Jim or the world or whatever.
+    script.
+        panel = new Interface.Panel({ useRelativeSizesAndPositions:true }) // panel fills page by default, alternatively you can specify boundaries
+        var menu = new Interface.Menu({
+            bounds:[.05,.22,.30,.19],
+            stroke:"#666",
+            label: 'paint color',
+            options:['red','green','blue','pink','purple'],
+            target: panel, key:'background',
+        });
+        var a = new Interface.Button({
+            bounds:[.05,.05,.90,.15],
+            label:'press and hold to paint',
+            mode:'momentary',
+            target:"OSC", key:'/activeclip/video/opacity/values',
+            //activeclip/video/opacity/values
+        });
+        var b = new Interface.Slider({
+            bounds:[.05,.45,.90,.1],
+            label: 'paint width',
+            isVertical:false,
+            value:.5,
+        });
+        var accelerometer = new Interface.Accelerometer({
+            onvaluechange : function(_x,_y,_z) {
+                x.setValue(_x);
+                y.setValue(_y);
+                z.setValue(_z);
+            }
+        }).start();
+        var x = new Interface.Slider({
+            label: 'x',
+            bounds:[.05,.60,.3,.2]
+        });
+        var y = new Interface.Slider({
+            label: 'y',
+            bounds:[.35,.60,.3,.2]
+        });
+        var z = new Interface.Slider({
+            label: 'z',
+            bounds:[.65,.60,.3,.2]
+        });
+        var orientation = new Interface.Orientation({
+            onvaluechange : function(_pitch, _roll, _yaw, _heading) {
+                pitch.setValue(_pitch);
+                roll.setValue(_roll);
+                yaw.setValue(_yaw);
+            }
+        });
+        var pitch = new Interface.Slider({
+            label: 'pitch',
+            bounds:[.05,.80,.3,.19]
+        });
+        var roll = new Interface.Slider({
+            label: 'roll',
+            bounds:[.35,.80,.3,.19]
+        });
+        var yaw = new Interface.Slider({
+            label: 'yaw',
+            bounds:[.65,.80,.3,.19]
+        });
+        panel.add(a,b,x,y,z,pitch,roll,yaw,menu);
+        orientation.start()
+        panel.background = 'black';
